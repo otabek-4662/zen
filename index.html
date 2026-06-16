@@ -35,6 +35,103 @@
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
+/* Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+.loading-text {
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: loadPulse 1.5s ease-in-out infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes loadPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Gradient Blob Animations */
+.gradient-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: blobMove 20s ease-in-out infinite;
+}
+.blob-1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(108, 99, 255, 0.3);
+  top: -100px;
+  left: -100px;
+  animation-delay: 0s;
+}
+.blob-2 {
+  width: 350px;
+  height: 350px;
+  background: rgba(0, 212, 170, 0.25);
+  top: 50%;
+  right: -100px;
+  animation-delay: -5s;
+  animation-duration: 25s;
+}
+.blob-3 {
+  width: 300px;
+  height: 300px;
+  background: rgba(108, 99, 255, 0.2);
+  bottom: -50px;
+  left: 30%;
+  animation-delay: -10s;
+  animation-duration: 22s;
+}
+[data-theme="light"] .blob { opacity: 0.2; }
+@keyframes blobMove {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -80px) scale(1.1); }
+  50% { transform: translate(-30px, 60px) scale(0.9); }
+  75% { transform: translate(70px, 30px) scale(1.05); }
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -47,6 +144,21 @@ body {
   transition: background 0.3s, color 0.3s;
   overflow-x: hidden;
 }
+/* Parallax */
+.parallax-section {
+  position: relative;
+  overflow: hidden;
+}
+.parallax-bg {
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  pointer-events: none;
+  will-change: transform;
+}
+
 /* Navigation */
 .navbar {
   position: fixed;
@@ -438,7 +550,11 @@ section {
 
 .pricing-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow);
+  box-shadow: 0 0 20px rgba(108, 99, 255, 0.4), 0 0 40px rgba(108, 99, 255, 0.2), 0 0 60px rgba(108, 99, 255, 0.1);
+  border-color: var(--primary);
+}
+[data-theme="light"] .pricing-card:hover {
+  box-shadow: 0 0 20px rgba(108, 99, 255, 0.3), 0 0 40px rgba(108, 99, 255, 0.15);
 }
 
 .pricing-card.featured {
@@ -530,6 +646,232 @@ section {
 .pricing-btn.primary:hover {
   box-shadow: 0 8px 30px rgba(108, 99, 255, 0.6);
 }
+/* Testimonials Section */
+.testimonials {
+  background: var(--bg-secondary);
+}
+.testimonials-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+.testimonial-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 20px 40px rgba(108, 99, 255, 0.1);
+}
+.testimonial-stars {
+  color: #ffc107;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+.testimonial-text {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.testimonial-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.testimonial-info h4 {
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+.testimonial-info span {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* FAQ Section */
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.faq-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+.faq-item:hover {
+  border-color: var(--primary);
+}
+.faq-question {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-family: inherit;
+}
+.faq-question svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  stroke: var(--text-secondary);
+}
+.faq-item.active .faq-question svg {
+  transform: rotate(180deg);
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+.faq-answer p {
+  padding: 0 2rem 1.5rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.faq-item.active .faq-answer {
+  max-height: 300px;
+}
+
+/* Contact Form Section */
+.contact {
+  background: var(--bg-secondary);
+}
+.contact-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.contact-form {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 3rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+}
+.form-group textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+.form-submit {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(108, 99, 255, 0.4);
+  font-family: inherit;
+}
+.form-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(108, 99, 255, 0.6);
+}
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* AOS (Animate On Scroll) */
+[data-aos] {
+  opacity: 0;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+[data-aos="fade-up"] {
+  transform: translateY(40px);
+}
+[data-aos="fade-down"] {
+  transform: translateY(-40px);
+}
+[data-aos="fade-left"] {
+  transform: translateX(40px);
+}
+[data-aos="fade-right"] {
+  transform: translateX(-40px);
+}
+[data-aos="zoom-in"] {
+  transform: scale(0.85);
+}
+[data-aos="zoom-out"] {
+  transform: scale(1.15);
+}
+[data-aos="flip-up"] {
+  transform: perspective(600px) rotateX(20deg);
+}
+[data-aos].aos-animate {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1) rotateX(0);
+}
+
 /* Footer */
 .footer {
   padding: 4rem 2rem 2rem;
@@ -604,6 +946,13 @@ section {
     grid-template-columns: 1fr;
     max-width: 400px;
   }
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+  .contact-form {
+    padding: 2rem 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -614,13 +963,28 @@ section {
 </style>
 </head>
 <body>
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">NovaPro X1</div>
+</div>
+
+<!-- Gradient Blobs -->
+<div class="gradient-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
 <!-- Navigation -->
 <nav class="navbar" id="navbar">
   <div class="nav-brand">NovaPro</div>
   <ul class="nav-links" id="navLinks">
     <li><a href="#features">Features</a></li>
-    <li><a href="#stats">Specs</a></li>
     <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0.75rem;">
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
@@ -639,7 +1003,7 @@ section {
 </nav>
 
 <!-- Hero Section -->
-<section class="hero" id="hero">
+<section class="hero parallax-section" id="hero">
   <div class="hero-content">
     <div class="hero-text">
       <h1>The Future<br><span class="gradient">In Your Hands</span></h1>
@@ -701,26 +1065,26 @@ section {
 
 <!-- Features Section -->
 <section id="features">
-  <div class="section-header fade-in">
+  <div class="section-header fade-in" data-aos="fade-up">
     <h2>Engineered for <span class="gradient">Excellence</span></h2>
     <p>Every detail meticulously crafted to deliver an experience that goes beyond expectations.</p>
   </div>
   <div class="features-grid">
-    <div class="feature-card fade-in">
+    <div class="feature-card fade-in" data-aos="fade-right">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 10 10-12h-9l1-10z"/></svg>
       </div>
       <h3>Lightning Performance</h3>
       <p>Powered by the next-gen NovaChip A1 processor, delivering unprecedented speed and efficiency for everything you do.</p>
     </div>
-    <div class="feature-card fade-in fade-in-delay-1">
+    <div class="feature-card fade-in fade-in-delay-1" data-aos="fade-up">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </div>
       <h3>Pro-Grade Camera</h3>
       <p>108MP quad-camera system with AI-enhanced night mode, 8K video recording, and cinematic stabilization.</p>
     </div>
-    <div class="feature-card fade-in fade-in-delay-2">
+    <div class="feature-card fade-in fade-in-delay-2" data-aos="fade-left">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="12" rx="2" ry="2"/><line x1="23" y1="10" x2="23" y2="14" stroke="white" stroke-width="1"/><rect x="3" y="8" width="12" height="8" rx="1" fill="rgba(255,255,255,0.3)"/></svg>
       </div>
@@ -731,12 +1095,12 @@ section {
 </section>
 <!-- Pricing Section -->
 <section class="pricing" id="pricing">
-  <div class="section-header fade-in">
+  <div class="section-header fade-in" data-aos="fade-up">
     <h2>Choose Your <span class="gradient">NovaPro X1</span></h2>
     <p>Three configurations designed to match your lifestyle and ambitions.</p>
   </div>
   <div class="pricing-grid">
-    <div class="pricing-card fade-in">
+    <div class="pricing-card fade-in" data-aos="fade-right">
       <h3>Basic</h3>
       <div class="price">$799<span>/one-time</span></div>
       <ul class="pricing-features">
@@ -759,7 +1123,7 @@ section {
       </ul>
       <button class="pricing-btn">Get Basic</button>
     </div>
-    <div class="pricing-card featured fade-in fade-in-delay-1">
+    <div class="pricing-card featured fade-in fade-in-delay-1" data-aos="zoom-in">
       <div class="pricing-badge">Most Popular</div>
       <h3>Pro</h3>
       <div class="price">$999<span>/one-time</span></div>
@@ -783,7 +1147,7 @@ section {
       </ul>
       <button class="pricing-btn primary">Get Pro</button>
     </div>
-    <div class="pricing-card fade-in fade-in-delay-2">
+    <div class="pricing-card fade-in fade-in-delay-2" data-aos="fade-left">
       <h3>Premium</h3>
       <div class="price">$1299<span>/one-time</span></div>
       <ul class="pricing-features">
@@ -806,6 +1170,141 @@ section {
       </ul>
       <button class="pricing-btn">Get Premium</button>
     </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials" id="testimonials">
+  <div class="section-header" data-aos="fade-up">
+    <h2>What Our <span class="gradient">Users Say</span></h2>
+    <p>Real experiences from NovaPro X1 owners around the world.</p>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card" data-aos="fade-right">
+      <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testimonial-text">"The NovaPro X1 has completely transformed how I work and create. The camera quality is unreal and the battery lasts forever. Best phone I have ever owned!"</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">A</div>
+        <div class="testimonial-info">
+          <h4>Alex Johnson</h4>
+          <span>Photographer</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card" data-aos="fade-up">
+      <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testimonial-text">"Incredible performance for gaming and multitasking. The 120Hz display is buttery smooth and the charging speed is mind-blowing. Worth every penny."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">S</div>
+        <div class="testimonial-info">
+          <h4>Sarah Kim</h4>
+          <span>Software Developer</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card" data-aos="fade-left">
+      <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testimonial-text">"I switched from a premium competitor and I am never going back. The design is stunning, the performance is top-tier, and the price is very competitive."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">M</div>
+        <div class="testimonial-info">
+          <h4>Marcus Lee</h4>
+          <span>Tech Reviewer</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card" data-aos="zoom-in">
+      <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p class="testimonial-text">"From video calls to editing documents on the go, the NovaPro X1 handles everything flawlessly. The build quality is premium and it feels amazing in hand."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">R</div>
+        <div class="testimonial-info">
+          <h4>Rachel Torres</h4>
+          <span>Business Consultant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq" id="faq">
+  <div class="section-header" data-aos="fade-up">
+    <h2>Frequently Asked <span class="gradient">Questions</span></h2>
+    <p>Everything you need to know about the NovaPro X1.</p>
+  </div>
+  <div class="faq-container">
+    <div class="faq-item" data-aos="fade-up">
+      <button class="faq-question">
+        What makes the NovaPro X1 different from other flagships?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>The NovaPro X1 combines cutting-edge NovaChip A1 processor, a 108MP camera system, and 5500mAh graphene battery with 120W hyper-charge technology. This unique combination delivers unmatched performance, photography, and battery life in a single device.</p>
+      </div>
+    </div>
+    <div class="faq-item" data-aos="fade-up">
+      <button class="faq-question">
+        How fast is the 120W hyper-charge technology?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Our 120W hyper-charge technology can charge the NovaPro X1 from 0% to 100% in just 18 minutes. A quick 5-minute charge gives you enough power for an entire day of normal use.</p>
+      </div>
+    </div>
+    <div class="faq-item" data-aos="fade-up">
+      <button class="faq-question">
+        Is the NovaPro X1 water resistant?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Yes! The NovaPro X1 features IP68 water and dust resistance rating. It can withstand submersion in up to 1.5 meters of fresh water for up to 30 minutes.</p>
+      </div>
+    </div>
+    <div class="faq-item" data-aos="fade-up">
+      <button class="faq-question">
+        What warranty options are available?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>The Basic model includes 1 year warranty, Pro includes 2 years plus NovaShield protection, and Premium comes with lifetime warranty and priority support. Extended warranty options are also available at purchase.</p>
+      </div>
+    </div>
+    <div class="faq-item" data-aos="fade-up">
+      <button class="faq-question">
+        When will the NovaPro X1 be available for shipping?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="faq-answer">
+        <p>Pre-orders are shipping within 2-3 weeks. Once officially launched, standard shipping takes 3-5 business days. Express shipping options are available for all orders.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="contact" id="contact">
+  <div class="section-header" data-aos="fade-up">
+    <h2>Get in <span class="gradient">Touch</span></h2>
+    <p>Have questions or want to learn more? Send us a message.</p>
+  </div>
+  <div class="contact-container" data-aos="zoom-in">
+    <form class="contact-form" id="contactForm">
+      <div class="form-group">
+        <label for="contactName">Your Name</label>
+        <input type="text" id="contactName" placeholder="Enter your full name" required>
+      </div>
+      <div class="form-group">
+        <label for="contactEmail">Email Address</label>
+        <input type="email" id="contactEmail" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="contactMessage">Message</label>
+        <textarea id="contactMessage" placeholder="Write your message here..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Message</button>
+      <div class="form-success" id="formSuccess">Thank you! Your message has been sent successfully.</div>
+    </form>
   </div>
 </section>
 
@@ -932,6 +1431,89 @@ const statsObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 
 statsObserver.observe(statsSection);
+
+// Loading Screen
+window.addEventListener('load', () => {
+  const loadingScreen = document.getElementById('loadingScreen');
+  setTimeout(() => {
+    loadingScreen.classList.add('hidden');
+  }, 1200);
+});
+
+// Parallax Effect
+const parallaxElements = document.querySelectorAll('.parallax-section');
+window.addEventListener('scroll', () => {
+  const scrollY = window.pageYOffset;
+  // Hero parallax
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    const heroContent = hero.querySelector('.hero-content');
+    if (heroContent) {
+      heroContent.style.transform = 'translateY(' + (scrollY * 0.3) + 'px)';
+      heroContent.style.opacity = 1 - (scrollY / 800);
+    }
+  }
+  // Blobs parallax
+  const blobs = document.querySelectorAll('.blob');
+  blobs.forEach((blob, i) => {
+    const speed = 0.05 + (i * 0.02);
+    blob.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+  });
+});
+
+// AOS (Animate On Scroll) - Custom Implementation
+function initAOS() {
+  const aosElements = document.querySelectorAll('[data-aos]');
+  const aosObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('aos-animate');
+        aosObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  aosElements.forEach(el => aosObserver.observe(el));
+}
+// Initialize AOS after loading screen
+setTimeout(initAOS, 1300);
+
+// FAQ Accordion
+const faqItems = document.querySelectorAll('.faq-item');
+faqItems.forEach(item => {
+  const question = item.querySelector('.faq-question');
+  question.addEventListener('click', () => {
+    const isActive = item.classList.contains('active');
+    // Close all items
+    faqItems.forEach(i => i.classList.remove('active'));
+    // Open clicked if it was closed
+    if (!isActive) {
+      item.classList.add('active');
+    }
+  });
+});
+
+// Contact Form
+const contactForm = document.getElementById('contactForm');
+const formSuccess = document.getElementById('formSuccess');
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  // Simulate form submission
+  const submitBtn = contactForm.querySelector('.form-submit');
+  submitBtn.textContent = 'Sending...';
+  submitBtn.disabled = true;
+  setTimeout(() => {
+    contactForm.reset();
+    submitBtn.textContent = 'Send Message';
+    submitBtn.disabled = false;
+    formSuccess.style.display = 'block';
+    setTimeout(() => {
+      formSuccess.style.display = 'none';
+    }, 4000);
+  }, 1500);
+});
 </script>
 </body>
 </html>
